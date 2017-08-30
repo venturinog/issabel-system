@@ -139,6 +139,12 @@ function report_backup_restore($smarty, $module_name, $local_templates_dir, $dir
         foreach($nombre_archivos as $key => $nombre_archivo) {
 
             // Control to see if its an old elastix system to migrate, or a new issabel system to restore
+	    ob_flush();
+	    flush();
+	    $versions='';
+	    $manifest='';
+	    $migrate=0;
+	    $migratefpbx=0;
             $dirarchi = $dir_backup."/".$nombre_archivo;
             if(is_file($dirarchi)) {
                 $versions = `tar Oxvf $dirarchi backup/versions.xml`;
@@ -270,7 +276,7 @@ function delete_backup($smarty, $module_name, $local_templates_dir, $dir_backup,
 {
 
     function delete_backup_isInvalidFile($file_name) {
-        return !preg_match('/(^issabel)|(^elastix)backup-\d{14}-\w{2}\.tar$/', $file_name);
+        return !preg_match('/(^issabel)|(^elastix)backup-\d{14}-\w{2}\.tar$i|^[0-9]{8}-[0-9]{6}-.*/', $file_name);
     }
 
     function delete_backup_doDelete($filePath) {
